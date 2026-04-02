@@ -1,0 +1,16 @@
+{
+  "name": "anything-digital-pet",
+  "description": "Digital pet plugin - generate pets with BaZi + Tarot + MBTI divination",
+  "owner": {
+    "name": "Vitozhu04",
+    "email": "noreply@github.com"
+  },
+  "plugins": [
+    {
+      "name": "anything-digital-pet",
+      "description": "Generate a digital pet for any project using BaZi + Tarot + MBTI divination. Desktop pet reacts to your agent in real time.",
+      "source": ".",
+      "category": "productivity"
+    }
+  ]
+}
