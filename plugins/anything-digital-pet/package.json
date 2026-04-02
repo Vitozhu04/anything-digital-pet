@@ -1,0 +1,11 @@
+{
+  "name": "anything-digital-pet-plugin",
+  "version": "0.2.0",
+  "private": true,
+  "dependencies": {
+    "@ai-sdk/google": "^3.0.55",
+    "ai": "^6.0.142",
+    "lunar-javascript": "^1.7.7",
+    "zod": "^4.3.6"
+  }
+}
