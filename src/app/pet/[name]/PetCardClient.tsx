@@ -29,7 +29,12 @@ export default function PetCardClient() {
 
   let pet: Pet;
   try {
-    pet = JSON.parse(atob(raw));
+    // Convert URL-safe base64 (-_ padding) to standard base64 (+/)
+    const std = raw.replace(/-/g, "+").replace(/_/g, "/");
+    const binary = atob(std);
+    const bytes = Uint8Array.from(binary, (c) => c.charCodeAt(0));
+    const json = new TextDecoder().decode(bytes);
+    pet = JSON.parse(json);
   } catch {
     return <div className="text-red-400 p-8">Invalid pet data.</div>;
   }
