@@ -1,4 +1,4 @@
-import { getDiceBearUrl, ELEMENT_SPECIES, getAvatarSeed } from "../avatar";
+import { getDiceBearUrl, ELEMENT_SPECIES, getAvatarSeed, getAsciiArt } from "../avatar";
 
 describe("ELEMENT_SPECIES", () => {
   it("has all five elements", () => {
@@ -9,11 +9,22 @@ describe("ELEMENT_SPECIES", () => {
     expect(ELEMENT_SPECIES.water).toBeDefined();
   });
 
-  it("each has name, emoji, and diceBearStyle", () => {
+  it("each has name, emoji, ascii, and color", () => {
     for (const s of Object.values(ELEMENT_SPECIES)) {
       expect(s.name).toBeTruthy();
       expect(s.emoji).toBeTruthy();
-      expect(s.diceBearStyle).toBeTruthy();
+      expect(s.ascii.length).toBeGreaterThan(0);
+      expect(s.color).toBeTruthy();
+    }
+  });
+});
+
+describe("getAsciiArt", () => {
+  it("returns string array for each element", () => {
+    for (const el of ["wood", "fire", "earth", "metal", "water"] as const) {
+      const art = getAsciiArt(el);
+      expect(Array.isArray(art)).toBe(true);
+      expect(art.length).toBe(5);
     }
   });
 });
@@ -22,14 +33,6 @@ describe("getDiceBearUrl", () => {
   it("returns a valid URL", () => {
     const url = getDiceBearUrl("water", "myseed123");
     expect(url).toMatch(/^https:\/\/api\.dicebear\.com/);
-  });
-
-  it("uses correct style for each element", () => {
-    expect(getDiceBearUrl("wood", "s")).toContain("lorelei");
-    expect(getDiceBearUrl("fire", "s")).toContain("adventurer");
-    expect(getDiceBearUrl("earth", "s")).toContain("avataaars");
-    expect(getDiceBearUrl("metal", "s")).toContain("bottts");
-    expect(getDiceBearUrl("water", "s")).toContain("fun-emoji");
   });
 
   it("is deterministic", () => {

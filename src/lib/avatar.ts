@@ -4,21 +4,78 @@ export type SpeciesInfo = {
   name: string;
   nameEn: string;
   emoji: string;
-  diceBearStyle: string;
+  ascii: string[];
+  color: string; // tailwind text color class
 };
 
 export const ELEMENT_SPECIES: Record<Element, SpeciesInfo> = {
-  wood:  { name: "苍龙",     nameEn: "Dragon",  emoji: "🐉", diceBearStyle: "lorelei" },
-  fire:  { name: "烈焰狐",   nameEn: "Fox",     emoji: "🦊", diceBearStyle: "adventurer" },
-  earth: { name: "土灵熊",   nameEn: "Bear",    emoji: "🐻", diceBearStyle: "avataaars" },
-  metal: { name: "铁甲兽",   nameEn: "Mech",    emoji: "🤖", diceBearStyle: "bottts" },
-  water: { name: "深渊章鱼", nameEn: "Octopus", emoji: "🐙", diceBearStyle: "fun-emoji" },
+  wood: {
+    name: "六角恐龙", nameEn: "Axolotl", emoji: "🦎",
+    color: "text-green-400",
+    ascii: [
+      "  \\\\  . .  //  ",
+      "   \\\\(° °)//   ",
+      "    ( \\_/ )     ",
+      "   / |   | \\    ",
+      "  ~  ~   ~  ~   ",
+    ],
+  },
+  fire: {
+    name: "耳廓狐", nameEn: "Fennec", emoji: "🦊",
+    color: "text-orange-400",
+    ascii: [
+      "   /\\     /\\   ",
+      "  / .\\___/. \\  ",
+      "  \\  ^ _ ^  /  ",
+      "   \\ /   \\ /   ",
+      "    \\_) (_/    ",
+    ],
+  },
+  earth: {
+    name: "水豚", nameEn: "Capybara", emoji: "🫎",
+    color: "text-yellow-400",
+    ascii: [
+      "    .-------.   ",
+      "   / o    o  \\  ",
+      "  |    __     | ",
+      "  |   /  \\    | ",
+      "   \\_/~~~~\\_/  ",
+    ],
+  },
+  metal: {
+    name: "独角鲸", nameEn: "Narwhal", emoji: "🐋",
+    color: "text-slate-300",
+    ascii: [
+      "         /      ",
+      "    .---/       ",
+      "   / o     \\    ",
+      "  |         >   ",
+      "   \\_______/    ",
+    ],
+  },
+  water: {
+    name: "水熊虫", nameEn: "Tardigrade", emoji: "🐻",
+    color: "text-blue-400",
+    ascii: [
+      "  _(\\_/)_       ",
+      " / (o.o) \\      ",
+      "( /_   _\\ )     ",
+      " \\/ | | \\/      ",
+      "   _| |_        ",
+    ],
+  },
 };
 
+/**
+ * Returns DiceBear URL as fallback, plus the ASCII art for primary display.
+ */
 export function getDiceBearUrl(element: Element, seed: string): string {
-  const { diceBearStyle } = ELEMENT_SPECIES[element];
   const encodedSeed = encodeURIComponent(seed);
-  return `https://api.dicebear.com/9.x/${diceBearStyle}/svg?seed=${encodedSeed}&size=200`;
+  return `https://api.dicebear.com/9.x/bottts/svg?seed=${encodedSeed}&size=200`;
+}
+
+export function getAsciiArt(element: Element): string[] {
+  return ELEMENT_SPECIES[element].ascii;
 }
 
 export function getAvatarSeed(name: string, timestampMs: number): string {
