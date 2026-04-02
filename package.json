@@ -11,13 +11,16 @@
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node",
-    "testMatch": ["**/src/lib/__tests__/**/*.test.ts"],
+    "testMatch": [
+      "**/src/lib/__tests__/**/*.test.ts"
+    ],
     "moduleNameMapper": {
       "^@/(.*)$": "<rootDir>/src/$1"
     }
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^3.0.64",
+    "@ai-sdk/google": "^3.0.55",
     "ai": "^6.0.142",
     "lunar-javascript": "^1.7.7",
     "next": "16.2.2",

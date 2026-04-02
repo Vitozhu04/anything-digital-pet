@@ -1,5 +1,5 @@
 import { generateObject } from "ai";
-import { anthropic } from "@ai-sdk/anthropic";
+import { google } from "@ai-sdk/google";
 import { z } from "zod";
 import type { PetBones } from "../types/pet";
 import { ELEMENT_SPECIES } from "./avatar";
@@ -45,7 +45,7 @@ ${projectContext}
 - System prompt 要让它在对话中始终保持这个独特性格`;
 
   const result = await generateObject({
-    model: anthropic("claude-haiku-4-5-20251001"),
+    model: google("gemini-2.5-flash"),
     schema: PersonaOutputSchema,
     prompt,
   });
