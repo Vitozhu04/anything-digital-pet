@@ -13,11 +13,22 @@ let sleepTimer = null;
 const SLEEP_TIMEOUT = 60000;
 
 export function initRenderer(petData) {
+  const rarityClass = RARITY_CLASSES[petData.bones.rarity] || "rarity-N";
+
+  // ASCII art
   const artEl = document.getElementById("ascii-art");
-  const iconEl = document.getElementById("status-icon");
   artEl.textContent = petData.soul.asciiArt.join("\n");
-  artEl.className = `${RARITY_CLASSES[petData.bones.rarity] || "rarity-N"} state-idle`;
-  iconEl.textContent = "";
+  artEl.className = `${rarityClass} state-idle`;
+
+  // Shelf
+  document.getElementById("shelf").className = rarityClass;
+
+  // Name label
+  const nameEl = document.getElementById("pet-name");
+  nameEl.className = rarityClass;
+
+  // Status
+  document.getElementById("status-icon").textContent = "";
   resetSleepTimer();
 }
 
