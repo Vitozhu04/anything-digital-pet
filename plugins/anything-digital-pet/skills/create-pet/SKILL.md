@@ -75,7 +75,7 @@ Create `.pet/` directory and save as `.pet/<name>.json`:
 }
 ```
 
-### 6. Announce
+### 6. Announce and launch desktop pet
 
 Display:
 ```
@@ -88,3 +88,12 @@ Display:
 
 💾 Saved to .pet/<name>.json
 ```
+
+Then auto-launch the desktop pet in the background:
+```bash
+# Try common locations for the binary
+for bin in "$HOME/bin/digital-pet" "$(which digital-pet 2>/dev/null)" "$(which anything-digital-pet 2>/dev/null)"; do
+  [ -x "$bin" ] && "$bin" &>/dev/null & break
+done
+```
+If the binary isn't found, tell the user: "To see your pet on the desktop, build and install the Tauri app from the repo."
