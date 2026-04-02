@@ -1,6 +1,6 @@
 # Skill: /create-pet:cli
 
-Generate a digital pet that represents the current project.
+Generate a digital pet that represents the current project. The pet's species, personality, and ASCII art are dynamically created by LLM based on BaZi + Tarot + MBTI divination.
 
 ## Steps
 
@@ -34,12 +34,14 @@ Generate a digital pet that represents the current project.
 
 5. **Save pet to .pet/ directory**
    - Create `.pet/` directory if it doesn't exist
-   - Parse the response JSON to get `data.soul.name`
-   - Save the `data` object as `.pet/<soul.name>.json`
+   - Parse response JSON → `data.soul.name`
+   - Save `data` as `.pet/<soul.name>.json` (v2.0 format with asciiArt)
 
-6. **Open pet card in browser**
-   - Base64-encode the pet JSON
-   - Open: `open "http://localhost:3002/pet/<name>?data=<base64>"`
+6. **Announce the pet**
+   - Show the ASCII art in terminal
+   - Print: `{emoji} {name} ({nameEn}) — {rarity} {species} · {mbti} · {tarot.name} {"正位"|"逆位"}`
+   - Rarity: N / R / SR / SSR
 
-7. **Announce the pet**
-   - Print: `{emoji} {name} ({nameEn}) has been born! {rarity} {species} · {mbti} · {tarot.name} {"正位" if upright else "逆位"}`
+7. **Launch desktop pet** (if Tauri app is installed)
+   - Run: `anything-digital-pet` or remind user to start the desktop app
+   - The desktop pet will auto-load from `.pet/` directory
