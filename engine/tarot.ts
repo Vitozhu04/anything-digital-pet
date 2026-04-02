@@ -10,7 +10,7 @@ export type TarotCard = {
   traitNeg: string;
 };
 
-export type Rarity = "common" | "uncommon" | "rare" | "epic" | "legendary";
+export type Rarity = "N" | "R" | "SR" | "SSR";
 
 export const MAJOR_ARCANA: TarotCard[] = [
   { id: 0,  name: "愚者",   emoji: "🃏", positive: "新的开始、自由、冒险精神",  negative: "鲁莽、缺乏方向、不负责任",   trait: "天真冒险者",   traitNeg: "迷途的旅人" },
@@ -62,9 +62,8 @@ export function drawTarot(name: string, timestampMs: number): TarotDraw {
 }
 
 export function getRarity(cardId: number): Rarity {
-  if (cardId <= 7) return "common";
-  if (cardId <= 12) return "uncommon";
-  if (cardId <= 17) return "rare";
-  if (cardId <= 20) return "epic";
-  return "legendary";
+  if (cardId <= 7) return "N";
+  if (cardId <= 14) return "R";
+  if (cardId <= 19) return "SR";
+  return "SSR";
 }

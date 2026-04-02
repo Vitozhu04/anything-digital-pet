@@ -40,9 +40,17 @@ describe("drawTarot", () => {
 });
 
 describe("getRarity", () => {
-  it("card 0-7 is common", () => expect(getRarity(3)).toBe("common"));
-  it("card 8-12 is uncommon", () => expect(getRarity(10)).toBe("uncommon"));
-  it("card 13-17 is rare", () => expect(getRarity(15)).toBe("rare"));
-  it("card 18-20 is epic", () => expect(getRarity(19)).toBe("epic"));
-  it("card 21 is legendary", () => expect(getRarity(21)).toBe("legendary"));
+  it("card 0-7 is N", () => {
+    for (let i = 0; i <= 7; i++) expect(getRarity(i)).toBe("N");
+  });
+  it("card 8-14 is R", () => {
+    for (let i = 8; i <= 14; i++) expect(getRarity(i)).toBe("R");
+  });
+  it("card 15-19 is SR", () => {
+    for (let i = 15; i <= 19; i++) expect(getRarity(i)).toBe("SR");
+  });
+  it("card 20-21 is SSR", () => {
+    expect(getRarity(20)).toBe("SSR");
+    expect(getRarity(21)).toBe("SSR");
+  });
 });
