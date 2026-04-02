@@ -1,4 +1,9 @@
-# Skill: /pet [name]
+---
+name: pet
+description: Summon your digital pet for conversation and interact with it in character. Use when the user wants to talk to their pet, check on their pet, or run /pet. Triggers on phrases like "talk to my pet", "where's my pet", "summon pet", "pet mode", "chat with pet".
+---
+
+# Pet
 
 Summon your digital pet for conversation.
 
@@ -8,7 +13,7 @@ Summon your digital pet for conversation.
    - List `.pet/*.json` files in the current project
    - If `[name]` argument provided, find matching file (fuzzy match on filename)
    - If no argument and only one pet: use it
-   - If no pets found: tell user to run `/create-pet:cli` first
+   - If no pets found: tell user to run `/create-pet-cli` first
 
 2. **Load pet data**
    - Read the `.pet/<name>.json` file
