@@ -9,7 +9,11 @@
     {
       "name": "anything-digital-pet",
       "description": "Generate a digital pet for any project using BaZi + Tarot + MBTI divination. Desktop pet reacts to your agent in real time.",
-      "source": ".",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/Vitozhu04/anything-digital-pet.git",
+        "sha": "7931bb8697cdb88b58d29d1cf69fe12716bcca94"
+      },
       "category": "productivity"
     }
   ]
