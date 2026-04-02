@@ -1,11 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { calculateBaZiFromDate, getDominantElement } from "@/lib/bazi";
-import { drawTarot, getRarity } from "@/lib/tarot";
-import { buildMbti, getMbtiFromAnswers } from "@/lib/mbti";
-import { getDiceBearUrl, getAvatarSeed, ELEMENT_SPECIES } from "@/lib/avatar";
-import { generatePersona } from "@/lib/persona";
-import { PetSchema } from "@/types/pet";
+import { buildBones, createPet } from "@engine/create";
 
 const CreatePetRequestSchema = z.object({
   source: z.enum(["link", "cli"]),
@@ -16,7 +11,7 @@ const CreatePetRequestSchema = z.object({
     sn: z.enum(["S", "N"]),
     tf: z.enum(["T", "F"]),
     jp: z.enum(["J", "P"]),
-  }),
+  }).optional(),
   timestampMs: z.number().optional(),
 });
 
@@ -32,54 +27,15 @@ export async function POST(req: NextRequest) {
   }
 
   const { source, sourceUrl, projectContext, mbti, timestampMs } = parsed.data;
-  const now = new Date(timestampMs ?? Date.now());
-  const ts = now.getTime();
+  const mbtiAnswers = mbti ?? { ei: "I" as const, sn: "N" as const, tf: "T" as const, jp: "P" as const };
 
-  const bazi = calculateBaZiFromDate(now);
-  const dominantElement = getDominantElement(bazi.elementDistribution);
-  const mbtiType = getMbtiFromAnswers(mbti.ei, mbti.sn, mbti.tf, mbti.jp);
-  const mbtiProfile = buildMbti(mbtiType);
-  const tarotDraw = drawTarot(projectContext.slice(0, 50), ts);
-  const rarity = getRarity(tarotDraw.card.id);
-  const avatarSeed = getAvatarSeed(projectContext.slice(0, 20), ts);
-  const avatarUrl = getDiceBearUrl(dominantElement, avatarSeed);
-  const species = ELEMENT_SPECIES[dominantElement];
-
-  const bones = {
-    bazi,
-    dominantElement,
-    mbti: mbtiType,
-    mbtiDescription: mbtiProfile.description,
-    tarot: {
-      id: tarotDraw.card.id,
-      name: tarotDraw.card.name,
-      upright: tarotDraw.upright,
-      trait: tarotDraw.trait,
-      meaning: tarotDraw.meaning,
-    },
-    rarity,
-    avatarUrl,
-    avatarSeed,
-  };
-
-  const persona = await generatePersona(bones, projectContext);
-
-  const pet = PetSchema.parse({
-    version: "1.0",
-    meta: {
-      createdAt: now.toISOString(),
-      source,
-      sourceUrl,
-      projectContext,
-    },
-    bones,
-    soul: {
-      ...persona,
-      species: species.name,
-      speciesEn: species.nameEn,
-      emoji: species.emoji,
-    },
-  });
-
-  return NextResponse.json({ success: true, data: pet });
+  try {
+    const pet = await createPet(source, projectContext, mbtiAnswers, sourceUrl, timestampMs);
+    return NextResponse.json({ success: true, data: pet });
+  } catch (error) {
+    return NextResponse.json(
+      { success: false, error: String(error) },
+      { status: 500 },
+    );
+  }
 }
