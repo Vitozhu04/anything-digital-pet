@@ -12,22 +12,36 @@ let currentState = "idle";
 let sleepTimer = null;
 const SLEEP_TIMEOUT = 60000;
 
-export function initRenderer(petData) {
+export function getActiveArtElement() {
+  const petArt = document.getElementById("pet-art");
+  return petArt.classList.contains("hidden")
+    ? document.getElementById("ascii-art")
+    : petArt;
+}
+
+export async function initRenderer(petData) {
   const rarityClass = RARITY_CLASSES[petData.bones.rarity] || "rarity-N";
+  const petArtEl = document.getElementById("pet-art");
+  const asciiEl = document.getElementById("ascii-art");
 
-  // ASCII art
-  const artEl = document.getElementById("ascii-art");
-  artEl.textContent = petData.soul.asciiArt.join("\n");
-  artEl.className = `${rarityClass} state-idle`;
+  // Load SVG pet
+  try {
+    const resp = await fetch("westie.svg");
+    const svg = await resp.text();
+    petArtEl.innerHTML = svg;
+    petArtEl.className = `${rarityClass} state-idle`;
+    asciiEl.classList.add("hidden");
+  } catch {
+    // Fallback to ASCII
+    petArtEl.classList.add("hidden");
+    asciiEl.classList.remove("hidden");
+    asciiEl.textContent = petData.soul.asciiArt.join("\n");
+    asciiEl.className = `${rarityClass} state-idle`;
+  }
 
-  // Shelf
+  // Shelf + name
   document.getElementById("shelf").className = rarityClass;
-
-  // Name label
-  const nameEl = document.getElementById("pet-name");
-  nameEl.className = rarityClass;
-
-  // Status
+  document.getElementById("pet-name").className = rarityClass;
   document.getElementById("status-icon").textContent = "";
   resetSleepTimer();
 }
@@ -43,18 +57,18 @@ export function setState(state) {
 
 function applyState(state) {
   currentState = state;
-  const artEl = document.getElementById("ascii-art");
+  const el = getActiveArtElement();
   const iconEl = document.getElementById("status-icon");
-  const rarityClass = artEl.className.split(" ").find(c => c.startsWith("rarity-")) || "rarity-N";
-  artEl.className = `${rarityClass} ${STATE_CLASSES[state] || "state-idle"}`;
+  const rarityClass = (el.className || "").split(" ").find(c => c.startsWith("rarity-")) || "rarity-N";
+  el.className = `${rarityClass} ${STATE_CLASSES[state] || "state-idle"}`;
   iconEl.textContent = STATUS_ICONS[state] || "";
 }
 
 function playWakeAnimation(callback) {
-  const artEl = document.getElementById("ascii-art");
-  artEl.style.animation = "jitter 0.1s linear 3";
+  const el = getActiveArtElement();
+  el.style.animation = "jitter 0.1s linear 3";
   setTimeout(() => {
-    artEl.style.animation = "";
+    el.style.animation = "";
     callback();
   }, 300);
 }

@@ -55,11 +55,18 @@ fn build_search_dirs() -> Vec<PathBuf> {
 }
 
 fn load_first_pet(dir: &PathBuf) -> Result<serde_json::Value, String> {
-    let entries: Vec<_> = fs::read_dir(dir)
+    let mut entries: Vec<_> = fs::read_dir(dir)
         .map_err(|e| e.to_string())?
         .filter_map(|e| e.ok())
         .filter(|e| e.path().extension().is_some_and(|ext| ext == "json"))
         .collect();
+
+    // Load the most recently modified pet
+    entries.sort_by(|a, b| {
+        let ta = a.metadata().and_then(|m| m.modified()).unwrap_or(std::time::SystemTime::UNIX_EPOCH);
+        let tb = b.metadata().and_then(|m| m.modified()).unwrap_or(std::time::SystemTime::UNIX_EPOCH);
+        tb.cmp(&ta)
+    });
 
     let entry = entries.first().ok_or("No pet JSON files found")?;
     let content = fs::read_to_string(entry.path()).map_err(|e| e.to_string())?;

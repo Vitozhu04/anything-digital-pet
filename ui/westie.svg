@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 220" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Fluffy head outline bumps -->
+  <circle cx="60" cy="62" r="12" />
+  <circle cx="45" cy="78" r="12" />
+  <circle cx="40" cy="98" r="12" />
+  <circle cx="48" cy="118" r="12" />
+  <circle cx="65" cy="130" r="12" />
+  <circle cx="85" cy="136" r="12" />
+  <circle cx="115" cy="136" r="12" />
+  <circle cx="135" cy="130" r="12" />
+  <circle cx="152" cy="118" r="12" />
+  <circle cx="160" cy="98" r="12" />
+  <circle cx="155" cy="78" r="12" />
+  <circle cx="140" cy="62" r="12" />
+  <circle cx="115" cy="55" r="12" />
+  <circle cx="85" cy="55" r="12" />
+
+  <!-- Head circle -->
+  <circle cx="100" cy="95" r="42" />
+
+  <!-- Ears -->
+  <polygon points="72,62 60,38 84,38" />
+  <polygon points="128,62 116,38 140,38" />
+
+  <!-- Eyes -->
+  <circle cx="85" cy="88" r="5" fill="currentColor" stroke="none" />
+  <circle cx="115" cy="88" r="5" fill="currentColor" stroke="none" />
+
+  <!-- Eye highlights -->
+  <circle cx="83" cy="86" r="1.5" fill="white" stroke="none" />
+  <circle cx="113" cy="86" r="1.5" fill="white" stroke="none" />
+
+  <!-- Nose -->
+  <ellipse cx="100" cy="102" rx="6" ry="4" fill="currentColor" stroke="none" />
+
+  <!-- Mouth -->
+  <path d="M93,108 Q96,114 100,108 Q104,114 107,108" fill="none" />
+
+  <!-- Body -->
+  <path d="M72,135 Q68,160 72,180 Q80,195 100,195 Q120,195 128,180 Q132,160 128,135" />
+
+  <!-- Paws -->
+  <ellipse cx="82" cy="195" rx="10" ry="6" />
+  <ellipse cx="118" cy="195" rx="10" ry="6" />
+</svg>

@@ -3,9 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "create-pet": "tsx bin/create-pet.ts",
     "desktop": "cargo tauri dev",
-    "setup-hooks": "bash bin/setup-hooks.sh",
     "dev": "next dev -p 3002",
     "build": "next build",
     "start": "next start -p 3002",
@@ -22,9 +20,6 @@
     }
   },
   "dependencies": {
-    "@ai-sdk/anthropic": "^3.0.64",
-    "@ai-sdk/google": "^3.0.55",
-    "ai": "^6.0.142",
     "lunar-javascript": "^1.7.7",
     "next": "16.2.2",
     "react": "19.2.4",

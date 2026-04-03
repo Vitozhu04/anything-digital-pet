@@ -5,8 +5,8 @@
   "identifier": "com.anything-digital-pet.app",
   "build": {
     "frontendDist": "../ui",
-    "devUrl": "http://localhost:1420",
-    "beforeDevCommand": "python3 -m http.server 1420 --directory /Users/vito/Dev/anything-digital-pet/ui",
+    "devUrl": "http://localhost:1421",
+    "beforeDevCommand": "python3 -m http.server 1421 --directory ui",
     "beforeBuildCommand": ""
   },
   "app": {
@@ -16,7 +16,7 @@
       {
         "title": "Pet",
         "width": 220,
-        "height": 180,
+        "height": 280,
         "decorations": false,
         "transparent": true,
         "alwaysOnTop": true,
