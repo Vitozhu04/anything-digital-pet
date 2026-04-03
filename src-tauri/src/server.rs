@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize};
+use std::io::Read;
 use std::sync::mpsc;
 use std::thread;
 use tiny_http::{Header, Response, Server};
@@ -29,7 +30,7 @@ pub fn start_server(sender: mpsc::Sender<PetEvent>) {
         for mut request in server.incoming_requests() {
             if request.method().as_str() == "POST" && request.url() == "/event" {
                 let mut body = String::new();
-                if request.as_reader().read_to_string(&mut body).is_ok() {
+                if request.as_reader().take(4096).read_to_string(&mut body).is_ok() {
                     if let Ok(event) = serde_json::from_str::<PetEvent>(&body) {
                         let _ = sender.send(event);
                     }

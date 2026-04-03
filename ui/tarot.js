@@ -34,44 +34,44 @@ function center(s, w) {
   return " ".repeat(Math.max(0, left)) + s + " ".repeat(Math.max(0, right));
 }
 
+function wrap(text, w) {
+  const words = text.split(" ");
+  const out = [];
+  let cur = "";
+  for (const word of words) {
+    if (cur && cur.length + 1 + word.length > w) {
+      out.push(center(cur, w));
+      cur = word;
+    } else {
+      cur = cur ? cur + " " + word : word;
+    }
+  }
+  if (cur) out.push(center(cur, w));
+  return out;
+}
+
 export function drawTarotCard() {
   const card = ARCANA[Math.floor(Math.random() * ARCANA.length)];
   const upright = Math.random() > 0.5;
   const dir = upright ? "Upright" : "Reversed";
-  const meaning = upright ? card.up : card.rev;
   const reading = upright ? card.upR : card.revR;
   const numeral = ROMAN[card.id];
-  const W = 17; // inner width
+  const W = 16;
 
-  // Split name into lines if needed
-  const words = card.name.split(" ");
-  const nameLines = [];
-  let line = "";
-  for (const w of words) {
-    if (line && line.length + 1 + w.length > W) {
-      nameLines.push(center(line, W));
-      line = w;
-    } else {
-      line = line ? line + " " + w : w;
-    }
-  }
-  if (line) nameLines.push(center(line, W));
+  const h = "-".repeat(W);
+  const border = "." + h + ".";
+  const bot = "'" + h + "'";
+  const sep = "|" + center("~", W) + "|";
+  const blank = "|" + " ".repeat(W) + "|";
 
-  // Build card
-  const border = ".-----------------.";
-  const bot =    "'================='"
-  const sep =    "|" + center("- ~ -", W) + "|";
-  const blank =  "|" + " ".repeat(W) + "|";
-  const lines = [border];
-  lines.push("|" + center(card.emoji + "  " + numeral, W) + "|");
-  lines.push(sep);
-  for (const nl of nameLines) {
-    lines.push("|" + nl + "|");
-  }
+  const lines = [border, blank];
+  lines.push("|" + center(card.emoji + " " + numeral, W) + "|");
+  lines.push(blank);
+  for (const nl of wrap(card.name, W)) lines.push("|" + nl + "|");
   lines.push("|" + center(dir, W) + "|");
   lines.push(sep);
-  lines.push("|" + center(reading, W) + "|");
-  lines.push(bot);
+  for (const rl of wrap(reading, W - 2)) lines.push("|" + center(rl.trim(), W) + "|");
+  lines.push(blank, bot);
 
-  return { card, upright, dir, meaning, reading, ascii: lines };
+  return { card, upright, dir, reading, ascii: lines };
 }

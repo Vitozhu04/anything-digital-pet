@@ -2,7 +2,7 @@
 // Pet reactions to user interaction.
 
 import { showBubble } from "./bubble.js";
-import { setState } from "./renderer.js";
+import { setState, getActiveArtElement } from "./renderer.js";
 import { drawTarotCard } from "./tarot.js";
 
 const GREETINGS = [
@@ -41,8 +41,8 @@ export function initInteractions() {
 
   // Mouse enter — wake from sleep
   container.addEventListener("mouseenter", () => {
-    const artEl = document.getElementById("ascii-art");
-    if (artEl && artEl.className.includes("state-sleeping")) {
+    const artEl = getActiveArtElement();
+    if (artEl && artEl.classList.contains("state-sleeping")) {
       setState("idle");
     }
   });
@@ -52,19 +52,28 @@ function onTarotDraw() {
   if (showingTarot) return;
   showingTarot = true;
 
-  const artEl = document.getElementById("ascii-art");
-  const petArt = artEl.textContent;
+  const artEl = getActiveArtElement();
+  const isSvg = artEl.id === "pet-art";
+  const petArt = isSvg ? artEl.innerHTML : artEl.textContent;
   const draw = drawTarotCard();
 
   // Flash + show card
-  artEl.textContent = draw.ascii.join("\n");
+  if (isSvg) {
+    artEl.innerHTML = `<pre style="font-size:inherit;margin:0">${draw.ascii.join("\n")}</pre>`;
+  } else {
+    artEl.textContent = draw.ascii.join("\n");
+  }
   artEl.classList.add("tarot-flash");
   setState("happy");
 
   // Swap back after 5s
   setTimeout(() => {
     artEl.classList.remove("tarot-flash");
-    artEl.textContent = petArt;
+    if (isSvg) {
+      artEl.innerHTML = petArt;
+    } else {
+      artEl.textContent = petArt;
+    }
     setState("idle");
     showingTarot = false;
   }, 5000);

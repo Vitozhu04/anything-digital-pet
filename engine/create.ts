@@ -1,9 +1,7 @@
 import { calculateBaZiFromDate, getDominantElement } from "./bazi";
 import { drawTarot, getRarity } from "./tarot";
 import { getMbtiFromAnswers, buildMbti } from "./mbti";
-import { generatePersona } from "./persona";
-import { PetSchema } from "./types";
-import type { PetBones, Pet } from "./types";
+import type { PetBones } from "./types";
 
 type MbtiAnswers = {
   ei: "E" | "I";
@@ -41,27 +39,4 @@ export function buildBones(
     },
     rarity,
   };
-}
-
-export async function createPet(
-  source: "cli" | "link",
-  projectContext: string,
-  mbtiAnswers: MbtiAnswers,
-  sourceUrl?: string,
-  timestampMs?: number,
-): Promise<Pet> {
-  const bones = buildBones(projectContext, mbtiAnswers, timestampMs);
-  const soul = await generatePersona(bones, projectContext);
-
-  return PetSchema.parse({
-    version: "2.0",
-    meta: {
-      createdAt: new Date(timestampMs ?? Date.now()).toISOString(),
-      source,
-      sourceUrl,
-      projectContext,
-    },
-    bones,
-    soul,
-  });
 }

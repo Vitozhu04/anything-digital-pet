@@ -13,7 +13,7 @@ Summon your digital pet for conversation.
    - List `.pet/*.json` files in the current project
    - If `[name]` argument provided, find matching file (fuzzy match on filename)
    - If no argument and only one pet: use it
-   - If no pets found: tell user to run `/create-pet-cli` first
+   - If no pets found: tell user to run `/create-pet` first
 
 2. **Load pet data**
    - Read the `.pet/<name>.json` file

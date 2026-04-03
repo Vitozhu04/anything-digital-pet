@@ -11,13 +11,17 @@ async function init() {
     try {
       petData = await window.__TAURI__.core.invoke("load_pet");
     } catch {
-      document.getElementById("ascii-art").textContent = "No pet found.\nRun /create-pet";
+      const el = document.getElementById("ascii-art");
+      el.classList.remove("hidden");
+      el.textContent = "No pet found.\nRun /create-pet";
       return;
     }
   }
 
   if (!petData) {
-    document.getElementById("ascii-art").textContent = "No pet found.\nRun /create-pet";
+    const el = document.getElementById("ascii-art");
+    el.classList.remove("hidden");
+    el.textContent = "No pet found.\nRun /create-pet";
     return;
   }
 
