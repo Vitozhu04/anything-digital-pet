@@ -24,15 +24,24 @@ export async function initRenderer(petData) {
   const petArtEl = document.getElementById("pet-art");
   const asciiEl = document.getElementById("ascii-art");
 
-  // Load SVG pet
-  try {
-    const resp = await fetch("westie.svg");
-    const svg = await resp.text();
-    petArtEl.innerHTML = svg;
-    petArtEl.className = `${rarityClass} state-idle`;
-    asciiEl.classList.add("hidden");
-  } catch {
-    // Fallback to ASCII
+  // Load pet-specific SVG if it exists, otherwise use ASCII art from pet data
+  const svgName = petData.soul.svg;
+  if (svgName) {
+    try {
+      const resp = await fetch(svgName);
+      if (!resp.ok) throw new Error("not found");
+      const svg = await resp.text();
+      petArtEl.innerHTML = svg;
+      petArtEl.className = `${rarityClass} state-idle`;
+      asciiEl.classList.add("hidden");
+    } catch {
+      petArtEl.classList.add("hidden");
+      asciiEl.classList.remove("hidden");
+      asciiEl.textContent = petData.soul.asciiArt.join("\n");
+      asciiEl.className = `${rarityClass} state-idle`;
+    }
+  } else {
+    // Default: render ASCII art from pet JSON
     petArtEl.classList.add("hidden");
     asciiEl.classList.remove("hidden");
     asciiEl.textContent = petData.soul.asciiArt.join("\n");

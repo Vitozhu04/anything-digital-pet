@@ -34,12 +34,28 @@ fn build_search_dirs() -> Vec<PathBuf> {
         dirs.push(resolved);
     }
 
-    // 2. Home directory
+    // 2. Executable's directory (resolves symlinks) — covers the repo root
+    //    when launched via ~/bin/digital-pet -> .../src-tauri/target/release/...
+    if let Ok(exe) = std::env::current_exe() {
+        if let Ok(real) = exe.canonicalize() {
+            // Walk up from the binary to find a directory containing .pet/
+            let mut p = real.as_path();
+            while let Some(parent) = p.parent() {
+                if parent.join(".pet").exists() {
+                    dirs.push(parent.to_path_buf());
+                    break;
+                }
+                p = parent;
+            }
+        }
+    }
+
+    // 3. Home directory
     if let Some(home) = dirs::home_dir() {
         dirs.push(home);
     }
 
-    // 3. Walk up from cwd to find .pet/ in parent directories
+    // 4. Walk up from cwd to find .pet/ in parent directories
     if let Ok(cwd) = std::env::current_dir() {
         let mut parent = cwd.as_path();
         while let Some(p) = parent.parent() {
@@ -81,10 +97,11 @@ pub fn run() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![load_pet])
         .setup(|app| {
-            // Clear window background + remove native shadow
+            // Clear window background + remove native shadow, then show
             let window = app.get_webview_window("main").unwrap();
             let _ = window.set_background_color(Some(tauri::window::Color(0, 0, 0, 0)));
             let _ = window.set_shadow(false);
+            let _ = window.show();
 
             tray::setup_tray(app)?;
 

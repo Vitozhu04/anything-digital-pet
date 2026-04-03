@@ -15,13 +15,14 @@
     "windows": [
       {
         "title": "Pet",
-        "width": 220,
-        "height": 280,
+        "width": 202,
+        "height": 262,
         "decorations": false,
         "transparent": true,
         "alwaysOnTop": true,
         "skipTaskbar": true,
-        "resizable": false
+        "resizable": false,
+        "visible": false
       }
     ],
     "security": {

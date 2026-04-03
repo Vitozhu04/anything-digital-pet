@@ -89,11 +89,25 @@ Display:
 💾 Saved to .pet/<name>.json
 ```
 
-Then auto-launch the desktop pet in the background:
+Then auto-launch the desktop pet in the background. Search these locations in order:
 ```bash
-# Try common locations for the binary
-for bin in "$HOME/bin/digital-pet" "$(which digital-pet 2>/dev/null)" "$(which anything-digital-pet 2>/dev/null)"; do
-  [ -x "$bin" ] && "$bin" &>/dev/null & break
+# 1. Check PATH and common install locations
+# 2. Check Tauri debug/release build in the repo
+# 3. Fall back to cargo tauri dev
+REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null)"
+for bin in \
+  "$(which anything-digital-pet 2>/dev/null)" \
+  "$HOME/bin/digital-pet" \
+  "$REPO_ROOT/src-tauri/target/release/anything-digital-pet" \
+  "$REPO_ROOT/src-tauri/target/debug/anything-digital-pet"; do
+  if [ -x "$bin" ]; then
+    "$bin" &>/dev/null &
+    echo "Launched desktop pet: $bin"
+    exit 0
+  fi
 done
+# No binary found — build and run
+echo "No binary found, running cargo tauri dev..."
+cd "$REPO_ROOT" && cargo tauri dev &>/dev/null &
 ```
-If the binary isn't found, tell the user: "To see your pet on the desktop, build and install the Tauri app from the repo."
+If `cargo` is not installed, tell the user: "Install Rust toolchain first: `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`"
