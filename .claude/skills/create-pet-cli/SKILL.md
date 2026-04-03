@@ -1,4 +1,9 @@
-# Skill: /create-pet:cli
+---
+name: create-pet-cli
+description: Generate a digital pet that represents the current project using BaZi + Tarot + MBTI divination. Use when the user wants to create a pet, summon a new companion, generate a digital pet, or run /create-pet. Triggers on phrases like "create a pet", "make me a pet", "generate pet", "new pet", "summon pet".
+---
+
+# Create Pet CLI
 
 Generate a digital pet that represents the current project. The pet's species, personality, and ASCII art are dynamically created by LLM based on BaZi + Tarot + MBTI divination.
 
@@ -34,7 +39,7 @@ Generate a digital pet that represents the current project. The pet's species, p
 
 5. **Save pet to .pet/ directory**
    - Create `.pet/` directory if it doesn't exist
-   - Parse response JSON → `data.soul.name`
+   - Parse response JSON -> `data.soul.name`
    - Save `data` as `.pet/<soul.name>.json` (v2.0 format with asciiArt)
 
 6. **Announce the pet**
